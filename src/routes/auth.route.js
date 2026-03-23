@@ -25,8 +25,17 @@ router.post('/login',
     ()=>console.log("login route ")
 );
 
+//protected
 
+router.get('/me',(req, res)=>console.log("protect route about the user"));
 
+router.put('/update-profile', (req, res)=>console.log("protect route about the user profile image"));
+
+router.put('/change-password', body('current-pasword').notEmpty(),
+body('new-password').isLength({min : 6}),
+validate,
+(req,res)=>console.log("change password route")
+);
 
 
 
