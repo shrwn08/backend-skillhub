@@ -12,6 +12,7 @@ import resourceRoutes from "./routes/resources.route.js"
 
 import sessionRoutes from "./routes/session.route.js"
 
+import progressRoutes from "./routes/progress.route.js"
 
 const app = express();
 // app.use(cors({
@@ -40,7 +41,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/mentors", mentorRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/rosources", resourceRoutes);
-
+app.use("/api/progress", progressRoutes);
 
 
 
