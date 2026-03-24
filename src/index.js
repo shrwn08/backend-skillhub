@@ -8,6 +8,10 @@ import userRoutes from "./routes/user.route.js"
 
 import mentorRoutes from "./routes/mentor.route.js"
 
+import resourceRoutes from "./routes/resources.route.js"
+
+import sessionRoutes from "./routes/session.route.js"
+
 
 const app = express();
 // app.use(cors({
@@ -34,6 +38,8 @@ app.use('/api/auth', authRoutes);
 app.use("/api/ideas", ideaRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/mentors", mentorRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/rosources", resourceRoutes);
 
 
 
