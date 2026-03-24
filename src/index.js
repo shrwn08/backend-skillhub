@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./DB/database.js";
 import authRoutes from "./routes/auth.route.js"
-import ideaRoutes from "./routes/idea.route.js"
+import ideaRoutes from "./routes/idea.route.js";
+
+import userRoutes from "./routes/user.route.js"
 
 
 const app = express();
@@ -27,7 +29,9 @@ app.get('/api/health', (req,res)=>res.json({status : "ok"}));
 
 //Mount routes
 app.use('/api/auth', authRoutes);
-app.use("/api/ideas", ideaRoutes)
+app.use("/api/ideas", ideaRoutes);
+app.use("/api/users", userRoutes);
+
 
 
 
