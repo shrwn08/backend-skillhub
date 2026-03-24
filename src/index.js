@@ -6,6 +6,8 @@ import ideaRoutes from "./routes/idea.route.js";
 
 import userRoutes from "./routes/user.route.js"
 
+import mentorRoutes from "./routes/mentor.route.js"
+
 
 const app = express();
 // app.use(cors({
@@ -31,6 +33,7 @@ app.get('/api/health', (req,res)=>res.json({status : "ok"}));
 app.use('/api/auth', authRoutes);
 app.use("/api/ideas", ideaRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/mentors", mentorRoutes);
 
 
 
