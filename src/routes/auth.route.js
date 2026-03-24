@@ -1,6 +1,6 @@
 import express from "express";
 import {body} from "express-validator";
-import validate from "../middlewares/validation.middleware"
+import validate from "../middlewares/validation.middleware.js"
 
 
 

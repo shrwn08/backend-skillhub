@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import connectDB from "./DB/database.js";
-import authRouters from "./routes/auth.route.js"
+import authRoutes from "./routes/auth.route.js"
+import ideaRoutes from "./routes/idea.route.js"
 
 
 const app = express();
@@ -25,6 +26,16 @@ app.get('/api/health', (req,res)=>res.json({status : "ok"}));
 
 
 //Mount routes
-app.use('/api/auth', authRouters)
+app.use('/api/auth', authRoutes);
+app.use("/api/ideas", ideaRoutes)
+
+
+
+//404 handler
+app.use((req,res)=>{
+    res.status(404).json({success : false, message : "Route not found"});
+})
+
+
 
 app.listen(8080, ()=>console.log(`server is running on port ${PORT}`))
