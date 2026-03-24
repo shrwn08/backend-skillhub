@@ -16,6 +16,8 @@ import progressRoutes from "./routes/progress.route.js"
 
 import bookmarkRoutes from "./routes/bookmark.route.js"
 
+import contactRoutes from "./routes/contact.route.js"
+
 const app = express();
 // app.use(cors({
 //     origin : "*",
@@ -45,6 +47,7 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/rosources", resourceRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
+app.use("/api/contact", contactRoutes);
 
 
 
