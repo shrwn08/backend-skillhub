@@ -18,6 +18,8 @@ import bookmarkRoutes from "./routes/bookmark.route.js"
 
 import contactRoutes from "./routes/contact.route.js"
 
+import adminRoutes from "./routes/admin.route.js"
+
 const app = express();
 // app.use(cors({
 //     origin : "*",
@@ -48,6 +50,7 @@ app.use("/api/rosources", resourceRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/admin", adminRoutes)
 
 
 
