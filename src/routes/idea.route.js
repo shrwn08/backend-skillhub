@@ -1,7 +1,7 @@
 import express from "express";
 import {authorise} from "../middlewares/auth.middleware.js"
 
-import {getAllIdeas } from "../controllers/idea.controller.js"
+import {getAllIdeas, getRecommended, getIdea } from "../controllers/idea.controller.js"
 
 
 
@@ -10,9 +10,9 @@ const router = express.Router();
 
 router.get('/', getAllIdeas);
 
-router.get('/recommended', (req, res)=>console.log("recommended routes"));
+router.get('/recommended', getRecommended);
 
-router.get("/:id", (req, res)=>console.log("route get id"));
+router.get("/:id", getIdea);
 
 
 router.post("/", (req,res)=>console.log('create an idea'));

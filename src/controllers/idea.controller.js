@@ -28,3 +28,44 @@ exports.getAllIdeas = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//GET /api/ideas/recommended => Returns ideas whose skillTags overlap user's skills/interests
+
+exports.getRecommended = async (req, res) => {
+  try {
+    const userTags = [...(req.user.skills || []), ...(req.user.interests || [])]
+      .map((t) => t.toLowerCase());
+ 
+    if (!userTags.length) {
+      // fallback: return latest ideas
+      const ideas = await Idea.find({ isActive: true }).limit(6).select('-roadmapSteps');
+      return res.json({ success: true, data: ideas });
+    }
+ 
+    // ideas that share at least one tag
+    const ideas = await Idea.find({
+      isActive: true,
+      skillTags: { $in: userTags.map((t) => new RegExp(t, 'i')) },
+    })
+      .select('-roadmapSteps')
+      .limit(9);
+ 
+    res.json({ success: true, data: ideas });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+//GET /api/ideas/:id
+
+exports.getIdea = async (req, res) => {
+  try {
+    const idea = await Idea.findById(req.params.id);
+    if (!idea || !idea.isActive) {
+      return res.status(404).json({ success: false, message: 'Idea not found' });
+    }
+    res.json({ success: true, data: idea });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
