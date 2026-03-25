@@ -69,3 +69,14 @@ exports.getIdea = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  POST /api/ideas   (admin only)
+
+exports.createIdea = async (req, res) => {
+  try {
+    const idea = await Idea.create({ ...req.body, createdBy: req.user._id });
+    res.status(201).json({ success: true, data: idea });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};

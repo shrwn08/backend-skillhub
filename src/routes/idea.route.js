@@ -15,7 +15,7 @@ router.get('/recommended', getRecommended);
 router.get("/:id", getIdea);
 
 
-router.post("/", (req,res)=>console.log('create an idea'));
+router.post("/", createIdea);
 router.put("/:id", (req, res)=>console.log("upadte idea"));
 router.delete("/:id", (req, res)=>console.log("delete the idea"));
 
