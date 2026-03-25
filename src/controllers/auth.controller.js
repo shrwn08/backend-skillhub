@@ -90,3 +90,21 @@ exports.getMe = async (req, res) =>{
     res.status(500).json({success : false, message : error.message});
   }
 }
+
+//profile upload
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const allowed = ['name', 'bio', 'location', 'phone', 'skills', 'interests'];
+    const updates = {};
+    allowed.forEach((f) => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
+ 
+    const user = await userModel.findByIdAndUpdate(req.user._id, updates, {
+      new: true, runValidators: true,
+    });
+    res.json({ success: true, data: user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+ 
