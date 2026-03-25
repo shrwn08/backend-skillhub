@@ -1,7 +1,13 @@
 import express from "express";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
-import { register, login, getme,updateProfile } from "../controllers/auth.controller.js";
+import {
+  register,
+  login,
+  getme,
+  updateProfile,
+  changePassword,
+} from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -32,8 +38,7 @@ router.post(
 
 router.get("/me", getme);
 
-router.put("/update-profile", updateProfile
-);
+router.put("/update-profile", updateProfile);
 
 router.put(
   "/change-password",
