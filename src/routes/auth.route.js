@@ -1,7 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
-import { register } from "../controllers/auth.controller.js";
+import { register, login } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.post(
   body("email").isEmail().withMessage("Valid email required"),
   body("password").notEmpty(),
   validate,
-  () => console.log("login route "),
+  login,
 );
 
 //protected

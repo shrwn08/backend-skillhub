@@ -50,3 +50,31 @@ export const register = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
+//login
+
+export const login = async (req, res) =>{
+    try {
+      const {email, password} = req.body;
+
+      if(!email || !password){
+        return res.status(400).json({success : false, message : "Email and password required"});
+      }
+
+      const user = await userModel.findOne({email}).select('+password');
+
+      if(!user || !(await user.matchPassword(password))){
+        return res.status(401).json({success : false, message : 'Invaild email or password'});
+      }
+
+
+      if(!user.isActive){
+        return res.status(403).json({success : false, message : 'Accont is deactivated'});
+      }
+
+      sendToken(user, 200, res)
+    } catch (error) {
+      res.status(500).json({success : false, message : error.message});
+    }
+}
