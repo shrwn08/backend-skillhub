@@ -80,3 +80,26 @@ exports.createIdea = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/ideas/:id   (admin only)
+exports.updateIdea = async (req, res) => {
+  try {
+    const idea = await Idea.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, runValidators: true,
+    });
+    if (!idea) return res.status(404).json({ success: false, message: 'Idea not found' });
+    res.json({ success: true, data: idea });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+//  DELETE /api/ideas/:id   (admin only)
+exports.deleteIdea = async (req, res) => {
+  try {
+    await Idea.findByIdAndUpdate(req.params.id, { isActive: false });
+    res.json({ success: true, message: 'Idea deactivated' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

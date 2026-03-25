@@ -1,7 +1,7 @@
 import express from "express";
 import {authorise} from "../middlewares/auth.middleware.js"
 
-import {getAllIdeas, getRecommended, getIdea } from "../controllers/idea.controller.js"
+import {getAllIdeas, getRecommended, getIdea, updateIdea, deleteIdea } from "../controllers/idea.controller.js"
 
 
 
@@ -16,7 +16,7 @@ router.get("/:id", getIdea);
 
 
 router.post("/", createIdea);
-router.put("/:id", (req, res)=>console.log("upadte idea"));
-router.delete("/:id", (req, res)=>console.log("delete the idea"));
+router.put("/:id", updateIdea);
+router.delete("/:id", deleteIdea);
 
 export default router;
