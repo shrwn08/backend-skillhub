@@ -29,3 +29,18 @@ exports.getAllMentors = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//GET /api/mentors/:id   (with availability slots)
+exports.getMentor = async (req, res) => {
+  try {
+    const mentor = await Mentor.findById(req.params.id).populate(
+      'user', 'name email bio location skills'
+    );
+    if (!mentor || !mentor.isApproved) {
+      return res.status(404).json({ success: false, message: 'Mentor not found' });
+    }
+    res.json({ success: true, data: mentor });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
