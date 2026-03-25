@@ -1,7 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
-import { register, login } from "../controllers/auth.controller.js";
+import { register, login, getme } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.post(
 
 //protected
 
-router.get("/me", (req, res) => console.log("protect route about the user"));
+router.get("/me", getme);
 
 router.put("/update-profile", (req, res) =>
   console.log("protect route about the user profile image"),
