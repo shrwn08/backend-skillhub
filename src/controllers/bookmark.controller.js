@@ -27,3 +27,17 @@ exports.addBookmark = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  DELETE /api/bookmarks/:ideaId   (protected)
+exports.removeBookmark = async (req, res) => {
+  try {
+    const result = await Bookmark.findOneAndDelete({
+      user: req.user._id,
+      idea: req.params.ideaId,
+    });
+    if (!result) return res.status(404).json({ success: false, message: 'Bookmark not found' });
+    res.json({ success: true, message: 'Bookmark removed' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
