@@ -1,9 +1,9 @@
 import express from "express";
 import {body} from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
+import {bookSession,getMySessions, getSession, cancelSession, confirmSession } from "../controllers/session.controller.js"
 
 const router = express.Router();
-import {bookSession,getMySessions, getSession, cancelSession } from "../controllers/session.controller.js"
 
 
 router.get('/my', getMySessions);
@@ -12,6 +12,9 @@ router.post('/',body('mentorId').notEmpty().withMessage("mentorId required"),bod
 validate,
 bookSession
 );
-router.put('/:id/cancel',  ctrl.cancelSession);
+router.put('/:id/confirm', confirmSession);
+router.put('/:id/cancel', cancelSession);
+
+
 
 export default router;

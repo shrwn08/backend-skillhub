@@ -141,3 +141,23 @@ exports.cancelSession = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/sessions/:id/confirm   (mentor only)
+exports.confirmSession = async (req, res) => {
+  try {
+    const session = await Session.findById(req.params.id).populate({
+      path: 'mentor', populate: { path: 'user', select: '_id' },
+    });
+    if (!session) return res.status(404).json({ success: false, message: 'Session not found' });
+ 
+    if (session.mentor.user._id.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Only the mentor can confirm' });
+    }
+ 
+    session.status = 'confirmed';
+    await session.save();
+    res.json({ success: true, data: session });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
