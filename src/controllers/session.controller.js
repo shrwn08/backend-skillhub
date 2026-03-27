@@ -53,3 +53,42 @@ exports.bookSession = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+//  GET /api/sessions/my   (protected – sessions for logged-in user)
+exports.getMySessions = async (req, res) => {
+  try {
+    const filter =
+      req.user.role === 'mentor'
+        ? { mentor: req.user._id }
+        : { mentee: req.user._id };
+ 
+    const sessions = await Session.find(filter)
+      .populate({ path: 'mentor', populate: { path: 'user', select: 'name email' } })
+      .populate('mentee', 'name email')
+      .sort({ date: 1 });
+ 
+    res.json({ success: true, data: sessions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+//  GET /api/sessions/my   (protected – sessions for logged-in user)
+exports.getMySessions = async (req, res) => {
+  try {
+    const filter =
+      req.user.role === 'mentor'
+        ? { mentor: req.user._id }
+        : { mentee: req.user._id };
+ 
+    const sessions = await Session.find(filter)
+      .populate({ path: 'mentor', populate: { path: 'user', select: 'name email' } })
+      .populate('mentee', 'name email')
+      .sort({ date: 1 });
+ 
+    res.json({ success: true, data: sessions });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
