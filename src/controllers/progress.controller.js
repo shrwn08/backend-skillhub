@@ -32,3 +32,36 @@ exports.getProgress = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/progress/:ideaId/step/:stepId
+
+exports.toggleStep = async (req, res) => {
+  try {
+    let progress = await Progress.findOne({
+      user: req.user._id, idea: req.params.ideaId,
+    });
+ 
+    if (!progress) {
+      return res.status(404).json({ success: false, message: 'Progress record not found. Start the roadmap first.' });
+    }
+ 
+    const step = progress.steps.find(
+      (s) => s.stepId.toString() === req.params.stepId
+    );
+    if (!step) {
+      return res.status(404).json({ success: false, message: 'Step not found' });
+    }
+ 
+    step.completed   = !step.completed;
+    step.completedAt = step.completed ? new Date() : undefined;
+ 
+    // Check if all steps done
+    progress.isCompleted = progress.steps.every((s) => s.completed);
+    if (progress.isCompleted) progress.completedAt = new Date();
+ 
+    await progress.save();
+    res.json({ success: true, data: progress });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
