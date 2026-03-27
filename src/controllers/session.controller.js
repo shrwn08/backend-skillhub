@@ -115,3 +115,29 @@ exports.getSession = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/sessions/:id/cancel   (protected)
+exports.cancelSession = async (req, res) => {
+  try {
+    const session = await Session.findById(req.params.id);
+    if (!session) return res.status(404).json({ success: false, message: 'Session not found' });
+ 
+    if (session.status === 'completed') {
+      return res.status(400).json({ success: false, message: 'Cannot cancel a completed session' });
+    }
+ 
+    session.status = 'cancelled';
+    await session.save();
+ 
+    // Free up the slot on mentor's profile
+    const mentor = await Mentor.findById(session.mentor);
+    if (mentor) {
+      const slot = mentor.availability.id(session.slotId);
+      if (slot) { slot.isBooked = false; await mentor.save(); }
+    }
+ 
+    res.json({ success: true, data: session });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

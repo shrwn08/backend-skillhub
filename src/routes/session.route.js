@@ -3,7 +3,7 @@ import {body} from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
 
 const router = express.Router();
-import {bookSession,getMySessions, getSession } from "../controllers/session.controller.js"
+import {bookSession,getMySessions, getSession, cancelSession } from "../controllers/session.controller.js"
 
 
 router.get('/my', getMySessions);
@@ -12,5 +12,6 @@ router.post('/',body('mentorId').notEmpty().withMessage("mentorId required"),bod
 validate,
 bookSession
 );
+router.put('/:id/cancel',  ctrl.cancelSession);
 
 export default router;
