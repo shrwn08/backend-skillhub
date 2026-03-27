@@ -92,3 +92,26 @@ exports.getMySessions = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+// GET /api/sessions/:id   (protected)
+exports.getSession = async (req, res) => {
+  try {
+    const session = await Session.findById(req.params.id)
+      .populate({ path: 'mentor', populate: { path: 'user', select: 'name email' } })
+      .populate('mentee', 'name email');
+ 
+    if (!session) return res.status(404).json({ success: false, message: 'Session not found' });
+ 
+    // Only mentor or mentee can view
+    const isMentee = session.mentee._id.toString() === req.user._id.toString();
+    const isMentor = session.mentor.user?._id?.toString() === req.user._id.toString();
+    if (!isMentee && !isMentor && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorised' });
+    }
+ 
+    res.json({ success: true, data: session });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
