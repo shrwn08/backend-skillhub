@@ -1,10 +1,10 @@
 import express from "express"
-
+import {getBookmarks} from "../controllers/bookmark.controller.js"
 
 
 const router = express.Router();
 
-router.get("/", (req, res)=>console.log("Book mark data"));
+router.get("/", getBookmarks);
 
 router.post("/", (req,res)=>console.log("add a bookmark"));
 
