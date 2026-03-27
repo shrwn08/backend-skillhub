@@ -1,7 +1,7 @@
 import express from "express";
 import {body} from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
-import {bookSession,getMySessions, getSession, cancelSession, confirmSession } from "../controllers/session.controller.js"
+import {bookSession,getMySessions, getSession, cancelSession, confirmSession, reviewSession } from "../controllers/session.controller.js"
 
 const router = express.Router();
 
@@ -14,6 +14,11 @@ bookSession
 );
 router.put('/:id/confirm', confirmSession);
 router.put('/:id/cancel', cancelSession);
+router.post('/:id/review',
+  body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating 1–5 required'),
+  validate,
+  reviewSession
+);
 
 
 

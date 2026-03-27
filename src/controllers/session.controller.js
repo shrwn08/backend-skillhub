@@ -161,3 +161,39 @@ exports.confirmSession = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  POST /api/sessions/:id/review   (mentee – after session completed)
+exports.reviewSession = async (req, res) => {
+  try {
+    const { rating, review } = req.body;
+    const session = await Session.findById(req.params.id);
+    if (!session) return res.status(404).json({ success: false, message: 'Session not found' });
+ 
+    if (session.mentee.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Only the mentee can leave a review' });
+    }
+    if (session.status !== 'completed') {
+      return res.status(400).json({ success: false, message: 'Session not yet completed' });
+    }
+ 
+    session.menteeRating = rating;
+    session.menteeReview = review;
+    await session.save();
+ 
+    // Recalculate mentor avgRating
+    const mentor = await Mentor.findById(session.mentor);
+    if (mentor) {
+      const reviewed = await Session.find({
+        mentor: mentor._id, menteeRating: { $exists: true },
+      });
+      const avg = reviewed.reduce((s, r) => s + r.menteeRating, 0) / reviewed.length;
+      mentor.avgRating    = Math.round(avg * 10) / 10;
+      mentor.totalReviews = reviewed.length;
+      await mentor.save();
+    }
+ 
+    res.json({ success: true, data: session });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
