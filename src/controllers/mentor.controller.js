@@ -71,3 +71,42 @@ exports.applyAsMentor = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+//PUT /api/mentors/:id   (mentor can update own profile)
+exports.updateMentor = async (req, res) => {
+  try {
+    const mentor = await Mentor.findById(req.params.id);
+    if (!mentor) return res.status(404).json({ success: false, message: 'Mentor not found' });
+ 
+    // Only allow the mentor themselves or admin
+    const isOwner = mentor.user.toString() === req.user._id.toString();
+    if (!isOwner && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorised' });
+    }
+ 
+    const allowed = ['headline', 'expertise', 'experience', 'languages', 'availability'];
+    const updates = {};
+    allowed.forEach((f) => { if (req.body[f] !== undefined) updates[f] = req.body[f]; });
+ 
+    const updated = await Mentor.findByIdAndUpdate(req.params.id, updates, {
+      new: true, runValidators: true,
+    }).populate('user', 'name email');
+ 
+    res.json({ success: true, data: updated });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
+//GET /api/mentors/:id/slots   – available (unbooked) slots
+exports.getAvailableSlots = async (req, res) => {
+  try {
+    const mentor = await Mentor.findById(req.params.id).select('availability');
+    if (!mentor) return res.status(404).json({ success: false, message: 'Mentor not found' });
+ 
+    const freeSlots = mentor.availability.filter((s) => !s.isBooked);
+    res.json({ success: true, data: freeSlots });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

@@ -1,5 +1,5 @@
 import express from "express";
-import {getAllMentors, getMentor,applyAsMentor} from "../controllers/mentor.controller"
+import {getAllMentors, getMentor,applyAsMentor, updateMentor, getAvailableSlots} from "../controllers/mentor.controller"
 
 
 
@@ -8,9 +8,9 @@ const router = express.Router();
 
 router.get("/", getAllMentors);
 router.get("/:id", getMentor);
-router.get("/:id/slots", (req,res)=>console.log("check the slots"));
+router.get("/:id/slots", getAvailableSlots);
 router.post("/apply", applyAsMentor);
-router.put(":/id", (req, res)=>console.log("update mentor's data"));
+router.put(":/id", updateMentor);
 
 
 export default router;
