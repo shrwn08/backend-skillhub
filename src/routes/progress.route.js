@@ -1,9 +1,9 @@
 import express from "express";
-import {getProgress, toggleStep} from "../controllers/progress.controller.js"
+import {getProgress, toggleStep, getAllProgress} from "../controllers/progress.controller.js"
 
 const router = express.Router();
 
-router.get("/all", (req, res)=>console.log("progress bar"));
+router.get("/all", getAllProgress);
 router.get("/:ideaId", getProgress);
 router.put("/:ideaId/step/:stepId",toggleStep);
 

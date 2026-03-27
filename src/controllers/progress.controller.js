@@ -65,3 +65,15 @@ exports.toggleStep = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  GET /api/progress/all
+
+exports.getAllProgress = async (req, res) => {
+  try {
+    const records = await Progress.find({ user: req.user._id })
+      .populate('idea', 'title emoji category');
+    res.json({ success: true, data: records });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
