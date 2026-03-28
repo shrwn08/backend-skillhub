@@ -95,4 +95,15 @@ exports.approveMentor = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
- 
+
+
+ // GET /api/admin/resources/pending 
+exports.getPendingResources = async (req, res) => {
+  try {
+    const resources = await Resource.find({ isPublished: false })
+      .populate('uploadedBy', 'name email');
+    res.json({ success: true, data: resources });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
