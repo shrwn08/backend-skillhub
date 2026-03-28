@@ -1,5 +1,5 @@
 import express from "express";
-import {getStats, getAllUsers,toggleUserActive } from "../controllers/admin.controller.js"
+import {getStats, getAllUsers,toggleUserActive, getPendingMentors } from "../controllers/admin.controller.js"
 
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.put("/users/:id/toggle-active", toggleUserActive);
 
 
 //mentor 
-router.get('/mentor/pending', ()=>console.log("get Mentor pendin"));
+router.get('/mentor/pending', getPendingMentors);
 
 router.put("/mentors/:id/approve", ()=>console.log("approve mentor"));
 

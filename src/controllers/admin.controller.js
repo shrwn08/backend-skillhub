@@ -68,3 +68,14 @@ exports.toggleUserActive = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  GET /api/admin/mentors/pending   
+exports.getPendingMentors = async (req, res) => {
+  try {
+    const mentors = await Mentor.find({ isApproved: false })
+      .populate('user', 'name email createdAt');
+    res.json({ success: true, data: mentors });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
