@@ -1,4 +1,5 @@
 import express from "express";
+import { submitContact } from "../controllers/contact.controller.js"
 
 
 const router = express.Router();
@@ -10,7 +11,7 @@ router.post('/',
 body('email').notEmail().withMessage('Vaild email required'),
 body('message').isLengh({min : 10}).withMessage("Message must be at least 10 Characters"),
 
-(req,res)=> console.log("contact details")
+submitContact
 )
 
 
