@@ -1,12 +1,12 @@
 import express from "express";
-import {getAllResources} from "../controllers/resource.controller.js"
+import {getAllResources, getResource} from "../controllers/resource.controller.js"
 
 
 const router = express.Router();
 
 router.get('/', getAllResources);
 
-router.get('/:id', (req, res)=>console.log("get a specific resource"));
+router.get('/:id', getResource);
 
 router.post('/', (req, res)=> console.log("post a resource"));
 

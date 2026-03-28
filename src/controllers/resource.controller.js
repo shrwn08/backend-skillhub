@@ -25,3 +25,17 @@ exports.getAllResources = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  GET /api/resources/:id  
+exports.getResource = async (req, res) => {
+  try {
+    const resource = await Resource.findById(req.params.id)
+      .populate('uploadedBy', 'name');
+    if (!resource || !resource.isPublished) {
+      return res.status(404).json({ success: false, message: 'Resource not found' });
+    }
+    res.json({ success: true, data: resource });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
