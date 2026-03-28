@@ -55,3 +55,16 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/admin/users/:id/toggle-active
+exports.toggleUserActive = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    user.isActive = !user.isActive;
+    await user.save();
+    res.json({ success: true, data: { id: user._id, isActive: user.isActive } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
