@@ -1,5 +1,5 @@
 import express from "express";
-import {getAllResources, getResource, createResource, updateResource} from "../controllers/resource.controller.js"
+import {getAllResources, getResource, createResource, updateResource, deleteResource} from "../controllers/resource.controller.js"
 
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.post('/', createResource);
 
 router.put('/:id', updateResource);
 
-router.delete('/:id', (req,res)=>console.log("delete resource"))
+router.delete('/:id', deleteResource)
 
 
 export default router;

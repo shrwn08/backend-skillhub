@@ -74,3 +74,13 @@ exports.updateResource = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+//  DELETE /api/resources/:id   (admin only)
+exports.deleteResource = async (req, res) => {
+  try {
+    await Resource.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Resource deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
