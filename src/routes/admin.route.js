@@ -1,4 +1,5 @@
 import express from "express";
+import {getStats } from "../controllers/admin.controller.js"
 
 
 const router = express.Router();
@@ -6,7 +7,7 @@ const router = express.Router();
 
 //dashboard
 
-router.get('/stats', (req, res)=>console.log("get all stats"));
+router.get('/stats', getStats);
 
 
 //user management
