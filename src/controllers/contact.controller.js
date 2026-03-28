@@ -42,3 +42,20 @@ exports.getAllContacts = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/contact/:id   (admin only – update status/note)
+exports.updateContact = async (req, res) => {
+  try {
+    const { status, adminNote } = req.body;
+    const updates = {};
+    if (status)    { updates.status = status; if (status === 'replied') updates.repliedAt = new Date(); }
+    if (adminNote) updates.adminNote = adminNote;
+ 
+    const entry = await Contact.findByIdAndUpdate(req.params.id, updates, { new: true });
+    if (!entry) return res.status(404).json({ success: false, message: 'Entry not found' });
+ 
+    res.json({ success: true, data: entry });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};

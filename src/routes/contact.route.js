@@ -1,5 +1,5 @@
 import express from "express";
-import { submitContact, getAllContacts } from "../controllers/contact.controller.js"
+import { submitContact, getAllContacts, updateContact } from "../controllers/contact.controller.js"
 
 
 const router = express.Router();
@@ -18,7 +18,7 @@ submitContact
 //admin only
 router.get('/', getAllContacts);
 
-router.put("/:id", (req, res)=> console.log("update the contact details by admin"));
+router.put("/:id", updateContact);
 
 
 export default router;
