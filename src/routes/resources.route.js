@@ -1,9 +1,10 @@
 import express from "express";
+import {getAllResources} from "../controllers/resource.controller.js"
 
 
 const router = express.Router();
 
-router.get('/', (req, res)=> console.log("get all resources"));
+router.get('/', getAllResources);
 
 router.get('/:id', (req, res)=>console.log("get a specific resource"));
 
