@@ -1,5 +1,5 @@
 import express from "express";
-import {getAllResources, getResource, createResource} from "../controllers/resource.controller.js"
+import {getAllResources, getResource, createResource, updateResource} from "../controllers/resource.controller.js"
 
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.get('/:id', getResource);
 
 router.post('/', createResource);
 
-router.put('/:id', (req,res)=>console.log("update the change in resource"));
+router.put('/:id', updateResource);
 
 router.delete('/:id', (req,res)=>console.log("delete resource"))
 

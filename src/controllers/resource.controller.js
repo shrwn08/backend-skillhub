@@ -61,3 +61,16 @@ exports.createResource = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/resources/:id   (admin only)
+exports.updateResource = async (req, res) => {
+  try {
+    const resource = await Resource.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, runValidators: true,
+    });
+    if (!resource) return res.status(404).json({ success: false, message: 'Resource not found' });
+    res.json({ success: true, data: resource });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
