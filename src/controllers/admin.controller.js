@@ -79,3 +79,20 @@ exports.getPendingMentors = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/admin/mentors/:id/approve
+exports.approveMentor = async (req, res) => {
+  try {
+    const mentor = await Mentor.findByIdAndUpdate(
+      req.params.id,
+      { isApproved: true },
+      { new: true }
+    ).populate('user', 'name email');
+ 
+    if (!mentor) return res.status(404).json({ success: false, message: 'Mentor not found' });
+    res.json({ success: true, data: mentor });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+ 

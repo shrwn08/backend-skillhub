@@ -1,5 +1,5 @@
 import express from "express";
-import {getStats, getAllUsers,toggleUserActive, getPendingMentors } from "../controllers/admin.controller.js"
+import {getStats, getAllUsers,toggleUserActive, getPendingMentors, approveMentor } from "../controllers/admin.controller.js"
 
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.put("/users/:id/toggle-active", toggleUserActive);
 //mentor 
 router.get('/mentor/pending', getPendingMentors);
 
-router.put("/mentors/:id/approve", ()=>console.log("approve mentor"));
+router.put("/mentors/:id/approve", approveMentor);
 
 
 //resource
