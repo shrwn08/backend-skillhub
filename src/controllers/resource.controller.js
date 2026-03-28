@@ -39,3 +39,25 @@ exports.getResource = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  POST /api/resources   (mentor / admin)
+exports.createResource = async (req, res) => {
+  try {
+    // Videos and courses: require externalUrl, no file upload
+    if (['video', 'course'].includes(req.body.type) && !req.body.externalUrl) {
+      return res.status(400).json({
+        success: false,
+        message: 'externalUrl is required for video/course resources',
+      });
+    }
+ 
+    const resource = await Resource.create({
+      ...req.body,
+      uploadedBy:  req.user._id,
+      isPublished: req.user.role === 'admin', // auto-publish if admin; else pending review
+    });
+    res.status(201).json({ success: true, data: resource });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
