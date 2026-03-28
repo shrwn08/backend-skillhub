@@ -107,3 +107,18 @@ exports.getPendingResources = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  PUT /api/admin/resources/:id/publish
+exports.publishResource = async (req, res) => {
+  try {
+    const resource = await Resource.findByIdAndUpdate(
+      req.params.id,
+      { isPublished: true },
+      { new: true }
+    );
+    if (!resource) return res.status(404).json({ success: false, message: 'Resource not found' });
+    res.json({ success: true, data: resource });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};

@@ -1,5 +1,5 @@
 import express from "express";
-import {getStats, getAllUsers,toggleUserActive, getPendingMentors, approveMentor, getPendingResources } from "../controllers/admin.controller.js"
+import {getStats, getAllUsers,toggleUserActive, getPendingMentors, approveMentor, getPendingResources, publishResource } from "../controllers/admin.controller.js"
 
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.put("/mentors/:id/approve", approveMentor);
 
 router.get('/resource/pending', getPendingResources);
 
-router.put("/resource/:id/publish", ()=>console.log("Publish resources"));
+router.put("/resource/:id/publish",publishResource);
 
 
 
