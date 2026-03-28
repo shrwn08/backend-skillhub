@@ -1,5 +1,5 @@
 import express from "express";
-import {getStats } from "../controllers/admin.controller.js"
+import {getStats, getAllUsers } from "../controllers/admin.controller.js"
 
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.get('/stats', getStats);
 
 
 //user management
-router.get('/users',(req, res)=>console.log("All users data"));
+router.get('/users',getAllUsers);
 
 router.put("/users/:id/toggle-active", ()=>console.log("perticular user"));
 

@@ -35,3 +35,23 @@ exports.getStats = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+//  GET /api/admin/users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const { role, page = 1, limit = 20 } = req.query;
+    const filter = {};
+    if (role) filter.role = role;
+ 
+    const total = await User.countDocuments(filter);
+    const users = await User.find(filter)
+      .select('-password')
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+ 
+    res.json({ success: true, total, page: Number(page), data: users });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
