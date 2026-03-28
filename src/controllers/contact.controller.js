@@ -24,3 +24,21 @@ exports.submitContact = async (req, res) => {
     res.status(400).json({ success: false, message: err.message });
   }
 };
+//  GET /api/contact   (admin only)
+exports.getAllContacts = async (req, res) => {
+  try {
+    const { status, page = 1, limit = 20 } = req.query;
+    const filter = {};
+    if (status) filter.status = status;
+ 
+    const total    = await Contact.countDocuments(filter);
+    const contacts = await Contact.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+ 
+    res.json({ success: true, total, page: Number(page), data: contacts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
