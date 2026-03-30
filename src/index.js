@@ -46,7 +46,7 @@ app.use("/api/ideas", ideaRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/mentors", mentorRoutes);
 app.use("/api/sessions", sessionRoutes);
-app.use("/api/rosources", resourceRoutes);
+app.use("/api/resources", resourceRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/contact", contactRoutes);
