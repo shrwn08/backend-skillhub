@@ -82,7 +82,7 @@ export const login = async (req, res) =>{
 
 //me (protected)
 
-exports.getMe = async (req, res) =>{
+export const getMe = async (req, res) =>{
   try {
     const user = await userModel(req.user._id);
     res.json({success : true, data : user});
@@ -93,7 +93,7 @@ exports.getMe = async (req, res) =>{
 
 //profile upload
 
-exports.updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const allowed = ['name', 'bio', 'location', 'phone', 'skills', 'interests'];
     const updates = {};
@@ -111,7 +111,7 @@ exports.updateProfile = async (req, res) => {
 
 //change-password
 
-exports.changePassword = async (req, res) => {
+export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
  

@@ -1,22 +1,25 @@
 import express from "express";
-import {authorise} from "../middlewares/auth.middleware.js"
+import { protect, authorise } from "../middlewares/auth.middleware.js";
 
-import {getAllIdeas, getRecommended, getIdea, updateIdea, deleteIdea } from "../controllers/idea.controller.js"
-
-
+import {
+  getAllIdeas,
+  getRecommended,
+  getIdea,
+  createIdea,
+  updateIdea,
+  deleteIdea,
+} from "../controllers/idea.controller.js";
 
 const router = express.Router();
 
+router.get("/", getAllIdeas);
 
-router.get('/', getAllIdeas);
-
-router.get('/recommended', getRecommended);
+router.get("/recommended", protect, getRecommended);
 
 router.get("/:id", getIdea);
 
-
-router.post("/", createIdea);
-router.put("/:id", updateIdea);
-router.delete("/:id", deleteIdea);
+router.post("/", protect, authorise("admin"), createIdea);
+router.put("/:id", protect, authorise("admin"), updateIdea);
+router.delete("/:id", protect, authorise("admin"), deleteIdea);
 
 export default router;

@@ -8,7 +8,7 @@ import Contact from "../models/contact.model.js"
 
 
 //  GET /api/admin/stats
-exports.getStats = async (req, res) => {
+export const getStats = async (req, res) => {
   try {
     const [
       totalUsers, totalMentors, totalIdeas,
@@ -37,7 +37,7 @@ exports.getStats = async (req, res) => {
 };
 
 //  GET /api/admin/users
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const { role, page = 1, limit = 20 } = req.query;
     const filter = {};
@@ -57,7 +57,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 //  PUT /api/admin/users/:id/toggle-active
-exports.toggleUserActive = async (req, res) => {
+export const toggleUserActive = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
@@ -70,7 +70,7 @@ exports.toggleUserActive = async (req, res) => {
 };
 
 //  GET /api/admin/mentors/pending   
-exports.getPendingMentors = async (req, res) => {
+export const getPendingMentors = async (req, res) => {
   try {
     const mentors = await Mentor.find({ isApproved: false })
       .populate('user', 'name email createdAt');
@@ -81,7 +81,7 @@ exports.getPendingMentors = async (req, res) => {
 };
 
 //  PUT /api/admin/mentors/:id/approve
-exports.approveMentor = async (req, res) => {
+export const approveMentor = async (req, res) => {
   try {
     const mentor = await Mentor.findByIdAndUpdate(
       req.params.id,
@@ -98,7 +98,7 @@ exports.approveMentor = async (req, res) => {
 
 
  // GET /api/admin/resources/pending 
-exports.getPendingResources = async (req, res) => {
+export const getPendingResources = async (req, res) => {
   try {
     const resources = await Resource.find({ isPublished: false })
       .populate('uploadedBy', 'name email');
@@ -109,7 +109,7 @@ exports.getPendingResources = async (req, res) => {
 };
 
 //  PUT /api/admin/resources/:id/publish
-exports.publishResource = async (req, res) => {
+export const publishResource = async (req, res) => {
   try {
     const resource = await Resource.findByIdAndUpdate(
       req.params.id,

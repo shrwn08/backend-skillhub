@@ -4,10 +4,11 @@ import validate from "../middlewares/validation.middleware.js";
 import {
   register,
   login,
-  getme,
+  getMe,
   updateProfile,
   changePassword,
-} from "../controllers/auth.controller.js";
+} from "../controllers/auth.controller.js"
+import {protect} from "../middlewares/auth.middleware.js"
 
 const router = express.Router();
 
@@ -36,16 +37,16 @@ router.post(
 
 //protected
 
-router.get("/me", getme);
+router.get("/me", protect, getMe);
 
-router.put("/update-profile", updateProfile);
+router.put("/update-profile",protect,  updateProfile);
 
 router.put(
   "/change-password",
   body("current-pasword").notEmpty(),
   body("new-password").isLength({ min: 6 }),
   validate,
-  (req, res) => console.log("change password route"),
+  changePassword
 );
 
 export default router;

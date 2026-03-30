@@ -24,7 +24,7 @@ const MentorSchema = new mongoose.Schema({
   },
   expertise: [
     {
-      type: string,
+      type: String,
       trim: true,
     },
   ],

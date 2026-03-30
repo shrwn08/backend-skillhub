@@ -3,7 +3,7 @@ import User from "../models/user.model.js"
 
 //  GET /api/mentors
 
-exports.getAllMentors = async (req, res) => {
+export const getAllMentors = async (req, res) => {
   try {
     const { expertise, search, page = 1, limit = 9 } = req.query;
     const filter = { isApproved: true, isActive: true };
@@ -31,7 +31,7 @@ exports.getAllMentors = async (req, res) => {
 };
 
 //GET /api/mentors/:id   (with availability slots)
-exports.getMentor = async (req, res) => {
+export const getMentor = async (req, res) => {
   try {
     const mentor = await Mentor.findById(req.params.id).populate(
       'user', 'name email bio location skills'
@@ -46,7 +46,7 @@ exports.getMentor = async (req, res) => {
 };
 
 //POST /api/mentors/apply   (protected – any user becomes mentor applicant)
-exports.applyAsMentor = async (req, res) => {
+export const applyAsMentor = async (req, res) => {
   try {
     const existing = await Mentor.findOne({ user: req.user._id });
     if (existing) {
@@ -73,7 +73,7 @@ exports.applyAsMentor = async (req, res) => {
 };
 
 //PUT /api/mentors/:id   (mentor can update own profile)
-exports.updateMentor = async (req, res) => {
+export const updateMentor = async (req, res) => {
   try {
     const mentor = await Mentor.findById(req.params.id);
     if (!mentor) return res.status(404).json({ success: false, message: 'Mentor not found' });
@@ -99,7 +99,7 @@ exports.updateMentor = async (req, res) => {
 };
 
 //GET /api/mentors/:id/slots   – available (unbooked) slots
-exports.getAvailableSlots = async (req, res) => {
+export const getAvailableSlots = async (req, res) => {
   try {
     const mentor = await Mentor.findById(req.params.id).select('availability');
     if (!mentor) return res.status(404).json({ success: false, message: 'Mentor not found' });

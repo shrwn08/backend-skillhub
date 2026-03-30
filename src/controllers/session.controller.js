@@ -4,7 +4,7 @@ import Mentor from "../models/mentor.model.js"
 
 //  POST /api/sessions   
 
-exports.bookSession = async (req, res) => {
+export const bookSession = async (req, res) => {
   try {
     const { mentorId, slotId, date, topic } = req.body;
  
@@ -56,7 +56,7 @@ exports.bookSession = async (req, res) => {
 
 
 //  GET /api/sessions/my   (protected – sessions for logged-in user)
-exports.getMySessions = async (req, res) => {
+export const getMySessions = async (req, res) => {
   try {
     const filter =
       req.user.role === 'mentor'
@@ -74,28 +74,11 @@ exports.getMySessions = async (req, res) => {
   }
 };
 
-//  GET /api/sessions/my   (protected – sessions for logged-in user)
-exports.getMySessions = async (req, res) => {
-  try {
-    const filter =
-      req.user.role === 'mentor'
-        ? { mentor: req.user._id }
-        : { mentee: req.user._id };
- 
-    const sessions = await Session.find(filter)
-      .populate({ path: 'mentor', populate: { path: 'user', select: 'name email' } })
-      .populate('mentee', 'name email')
-      .sort({ date: 1 });
- 
-    res.json({ success: true, data: sessions });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-};
+
 
 
 // GET /api/sessions/:id   (protected)
-exports.getSession = async (req, res) => {
+export const getSession = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id)
       .populate({ path: 'mentor', populate: { path: 'user', select: 'name email' } })
@@ -117,7 +100,7 @@ exports.getSession = async (req, res) => {
 };
 
 //  PUT /api/sessions/:id/cancel   (protected)
-exports.cancelSession = async (req, res) => {
+export const cancelSession = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id);
     if (!session) return res.status(404).json({ success: false, message: 'Session not found' });
@@ -143,7 +126,7 @@ exports.cancelSession = async (req, res) => {
 };
 
 //  PUT /api/sessions/:id/confirm   (mentor only)
-exports.confirmSession = async (req, res) => {
+export const confirmSession = async (req, res) => {
   try {
     const session = await Session.findById(req.params.id).populate({
       path: 'mentor', populate: { path: 'user', select: '_id' },
@@ -163,7 +146,7 @@ exports.confirmSession = async (req, res) => {
 };
 
 //  POST /api/sessions/:id/review   (mentee – after session completed)
-exports.reviewSession = async (req, res) => {
+export const reviewSession = async (req, res) => {
   try {
     const { rating, review } = req.body;
     const session = await Session.findById(req.params.id);

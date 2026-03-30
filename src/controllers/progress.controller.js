@@ -4,7 +4,7 @@ import Idea from "../models/idea.model.js"
 
 //  GET /api/progress/:ideaId   (protected)
 
-exports.getProgress = async (req, res) => {
+export const getProgress = async (req, res) => {
   try {
     const idea = await Idea.findById(req.params.ideaId);
     if (!idea) return res.status(404).json({ success: false, message: 'Idea not found' });
@@ -35,7 +35,7 @@ exports.getProgress = async (req, res) => {
 
 //  PUT /api/progress/:ideaId/step/:stepId
 
-exports.toggleStep = async (req, res) => {
+export const toggleStep = async (req, res) => {
   try {
     let progress = await Progress.findOne({
       user: req.user._id, idea: req.params.ideaId,
@@ -68,7 +68,7 @@ exports.toggleStep = async (req, res) => {
 
 //  GET /api/progress/all
 
-exports.getAllProgress = async (req, res) => {
+export const getAllProgress = async (req, res) => {
   try {
     const records = await Progress.find({ user: req.user._id })
       .populate('idea', 'title emoji category');

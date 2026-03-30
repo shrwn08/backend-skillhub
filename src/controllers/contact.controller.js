@@ -1,7 +1,7 @@
 import Contact from "../models/contact.model.js"
 
 
-exports.submitContact = async (req, res) => {
+export const submitContact = async (req, res) => {
   try {
     const { name, email, phone, subject, message, skills, interests } = req.body;
  
@@ -25,7 +25,7 @@ exports.submitContact = async (req, res) => {
   }
 };
 //  GET /api/contact   (admin only)
-exports.getAllContacts = async (req, res) => {
+export const getAllContacts = async (req, res) => {
   try {
     const { status, page = 1, limit = 20 } = req.query;
     const filter = {};
@@ -44,7 +44,7 @@ exports.getAllContacts = async (req, res) => {
 };
 
 //  PUT /api/contact/:id   (admin only – update status/note)
-exports.updateContact = async (req, res) => {
+export const updateContact = async (req, res) => {
   try {
     const { status, adminNote } = req.body;
     const updates = {};

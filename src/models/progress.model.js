@@ -4,7 +4,7 @@ const stepProgressSchema = new mongoose.Schema({
     stepId : {type : mongoose.Schema.Types.ObjectId, required : true},
     stepNumber : {type : Number},
     completed : {type : Boolean, default : false},
-    completedAt : {type : date},
+    completedAt : {type : Date},
 }, {_id : false});
 
 
@@ -15,7 +15,7 @@ const ProgressShcema = new mongoose.Schema({
     },
     steps : [stepProgressSchema],
     isCompleted : {type : Boolean, default: false},
-    completedAt : {type : Data},
+    completedAt : {type : Date},
 },{timestamps : true});
 
 

@@ -2,7 +2,7 @@ import Bookmark from "../models/bookmark.model.js"
 
 
 //  GET /api/bookmarks   (protected)
-exports.getBookmarks = async (req, res) => {
+export const getBookmarks = async (req, res) => {
   try {
     const bookmarks = await Bookmark.find({ user: req.user._id })
       .populate('idea', 'title emoji category description minCost maxCost currency skillTags')
@@ -14,7 +14,7 @@ exports.getBookmarks = async (req, res) => {
 };
 
 //  POST /api/bookmarks   (protected)  body: { ideaId }
-exports.addBookmark = async (req, res) => {
+export const addBookmark = async (req, res) => {
   try {
     const { ideaId } = req.body;
     const bookmark = await Bookmark.create({ user: req.user._id, idea: ideaId });
@@ -29,7 +29,7 @@ exports.addBookmark = async (req, res) => {
 };
 
 //  DELETE /api/bookmarks/:ideaId   (protected)
-exports.removeBookmark = async (req, res) => {
+export const removeBookmark = async (req, res) => {
   try {
     const result = await Bookmark.findOneAndDelete({
       user: req.user._id,

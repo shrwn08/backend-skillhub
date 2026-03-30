@@ -21,10 +21,10 @@ import contactRoutes from "./routes/contact.route.js"
 import adminRoutes from "./routes/admin.route.js"
 
 const app = express();
-// app.use(cors({
-//     origin : "*",
-//     creadentials : true
-// }));
+app.use(cors({
+    origin : "*",
+    creadentials : true
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 

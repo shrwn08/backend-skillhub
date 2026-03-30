@@ -1,10 +1,13 @@
 import express from "express";
 import {body} from "express-validator";
 import validate from "../middlewares/validation.middleware.js";
+import {protect} from "../middlewares/auth.middleware.js" 
 import {bookSession,getMySessions, getSession, cancelSession, confirmSession, reviewSession } from "../controllers/session.controller.js"
 
 const router = express.Router();
 
+
+router.use(protect)
 
 router.get('/my', getMySessions);
 router.get('/:id', getSession);

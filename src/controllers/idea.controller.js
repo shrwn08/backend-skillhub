@@ -2,7 +2,7 @@ import Idea from "../models/idea.model.js"
 
 //GET /api/ideas => Query: ?category=food&search=bakery&page=1&limit=9
 
-exports.getAllIdeas = async (req, res) => {
+export const getAllIdeas = async (req, res) => {
   try {
     const { category, search, page = 1, limit = 9 } = req.query;
     const filter = { isActive: true };
@@ -31,7 +31,7 @@ exports.getAllIdeas = async (req, res) => {
 
 //GET /api/ideas/recommended => Returns ideas whose skillTags overlap user's skills/interests
 
-exports.getRecommended = async (req, res) => {
+export const getRecommended = async (req, res) => {
   try {
     const userTags = [...(req.user.skills || []), ...(req.user.interests || [])]
       .map((t) => t.toLowerCase());
@@ -58,7 +58,7 @@ exports.getRecommended = async (req, res) => {
 
 //GET /api/ideas/:id
 
-exports.getIdea = async (req, res) => {
+export const getIdea = async (req, res) => {
   try {
     const idea = await Idea.findById(req.params.id);
     if (!idea || !idea.isActive) {
@@ -72,7 +72,7 @@ exports.getIdea = async (req, res) => {
 
 //  POST /api/ideas   (admin only)
 
-exports.createIdea = async (req, res) => {
+export const createIdea = async (req, res) => {
   try {
     const idea = await Idea.create({ ...req.body, createdBy: req.user._id });
     res.status(201).json({ success: true, data: idea });
@@ -82,7 +82,7 @@ exports.createIdea = async (req, res) => {
 };
 
 //  PUT /api/ideas/:id   (admin only)
-exports.updateIdea = async (req, res) => {
+export const updateIdea = async (req, res) => {
   try {
     const idea = await Idea.findByIdAndUpdate(req.params.id, req.body, {
       new: true, runValidators: true,
@@ -95,7 +95,7 @@ exports.updateIdea = async (req, res) => {
 };
 
 //  DELETE /api/ideas/:id   (admin only)
-exports.deleteIdea = async (req, res) => {
+export const deleteIdea = async (req, res) => {
   try {
     await Idea.findByIdAndUpdate(req.params.id, { isActive: false });
     res.json({ success: true, message: 'Idea deactivated' });

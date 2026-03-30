@@ -3,7 +3,7 @@ import Resource from "../models/resource.model.js"
 
 //  GET /api/resources
 
-exports.getAllResources = async (req, res) => {
+export const getAllResources = async (req, res) => {
   try {
     const { type, topic, search, featured, page = 1, limit = 8 } = req.query;
     const filter = { isPublished: true };
@@ -27,7 +27,7 @@ exports.getAllResources = async (req, res) => {
 };
 
 //  GET /api/resources/:id  
-exports.getResource = async (req, res) => {
+export const getResource = async (req, res) => {
   try {
     const resource = await Resource.findById(req.params.id)
       .populate('uploadedBy', 'name');
@@ -41,7 +41,7 @@ exports.getResource = async (req, res) => {
 };
 
 //  POST /api/resources   (mentor / admin)
-exports.createResource = async (req, res) => {
+export const createResource = async (req, res) => {
   try {
     // Videos and courses: require externalUrl, no file upload
     if (['video', 'course'].includes(req.body.type) && !req.body.externalUrl) {
@@ -63,7 +63,7 @@ exports.createResource = async (req, res) => {
 };
 
 //  PUT /api/resources/:id   (admin only)
-exports.updateResource = async (req, res) => {
+export const updateResource = async (req, res) => {
   try {
     const resource = await Resource.findByIdAndUpdate(req.params.id, req.body, {
       new: true, runValidators: true,
@@ -76,7 +76,7 @@ exports.updateResource = async (req, res) => {
 };
 
 //  DELETE /api/resources/:id   (admin only)
-exports.deleteResource = async (req, res) => {
+export const deleteResource = async (req, res) => {
   try {
     await Resource.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Resource deleted' });
