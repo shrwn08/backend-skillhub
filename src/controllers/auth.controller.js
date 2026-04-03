@@ -7,7 +7,7 @@ dotenv.config();
 //sign and return a jwt
 
 const signToken = (id) => {
-  jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 };
@@ -15,10 +15,11 @@ const signToken = (id) => {
 const sendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  //remove passward from putput
-
-  user.password = undefined;
-  res.status(statusCode).json({ sucess: true, token, data: user });
+console.log(token)
+  //remove password from output
+    const safeUser = user.toObject();
+    delete safeUser.password;
+ return  res.status(statusCode).json({ success: true, token, data: safeUser });
 };
 
 //register controller
@@ -27,7 +28,8 @@ export const register = async (req, res) => {
   try {
     const { name, email, password, role, skills, interests } = req.body;
 
-    const allowedRole = ["user", "mentor"].includes(role) ? role : "user";
+
+    const allowedRole = role &&  ["user", "mentor"].includes(role) ? role : "user";
 
     const existing = await userModel.findOne({ email });
 
@@ -35,6 +37,7 @@ export const register = async (req, res) => {
       return res
         .status(409)
         .json({ success: false, message: "Email already registered" });
+    console.log(existing);
 
     const user = await userModel.create({
       name,
@@ -44,9 +47,13 @@ export const register = async (req, res) => {
       skills: skills || [],
       interests: interests || [],
     });
+console.log(sendToken(user, 201, res))
 
     sendToken(user, 201, res);
+
+
   } catch (error) {
+   console.log("ERROR:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
